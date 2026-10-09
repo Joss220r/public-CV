@@ -1,0 +1,9 @@
+services:
+  portfolio:
+    build:
+      context: .
+      target: runtime
+    image: jose-ayala-portfolio:local
+    restart: unless-stopped
+    ports:
+      - "${SITE_PORT:-8080}:80"

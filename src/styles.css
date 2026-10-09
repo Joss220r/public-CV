@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  --color-ink: #08070d;
+  --color-panel: #111019;
+  --color-line: #2a2636;
+  --color-violet-300: #c4a7ff;
+  --color-violet-400: #a978ff;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7542e5;
+  --shadow-glow: 0 0 60px rgba(139, 92, 246, 0.18);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: #08070d;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: #08070d;
+  }
+
+  ::selection {
+    background: rgba(169, 120, 255, 0.35);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl border-b border-white/5 px-5 py-24 sm:px-8 sm:py-32 lg:px-12;
+  }
+
+  .primary-link {
+    @apply inline-flex min-h-12 items-center justify-center rounded-xl bg-violet-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_35px_rgba(117,66,229,0.25)] transition duration-300 hover:bg-violet-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 focus-visible:ring-offset-4 focus-visible:ring-offset-ink;
+  }
+
+  .secondary-link {
+    @apply inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.025] px-6 py-3 text-sm font-semibold text-zinc-200 transition duration-300 hover:border-violet-400/40 hover:bg-violet-500/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 focus-visible:ring-offset-4 focus-visible:ring-offset-ink;
+  }
+
+  .content-card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.025] p-6 transition duration-300 hover:border-violet-400/30 hover:bg-violet-500/[0.045] sm:p-8;
+  }
+
+  .tech-pill {
+    @apply rounded-full border border-white/10 bg-black/20 px-3 py-1.5 font-mono text-xs text-zinc-300;
+  }
+
+  .text-link {
+    @apply rounded-sm border-b border-violet-400/40 pb-1 text-sm font-semibold text-white transition-colors hover:border-violet-300 hover:text-violet-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300;
+  }
+
+  .skip-link {
+    @apply fixed left-4 top-4 z-[100] -translate-y-24 rounded-lg bg-white px-4 py-3 font-semibold text-ink transition-transform focus:translate-y-0;
+  }
+}
+
+.hero-glow {
+  position: absolute;
+  inset: auto -15rem 0 auto;
+  width: 48rem;
+  height: 48rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(117, 66, 229, 0.22), transparent 68%);
+  filter: blur(20px);
+  animation: glow-drift 10s ease-in-out infinite alternate;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 5rem 5rem;
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(1rem);
+  animation: reveal-up 700ms cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
+.reveal-1 { animation-delay: 100ms; }
+.reveal-2 { animation-delay: 180ms; }
+.reveal-3 { animation-delay: 280ms; }
+.reveal-4 { animation-delay: 380ms; }
+
+@keyframes reveal-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-3rem, -2rem, 0) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
