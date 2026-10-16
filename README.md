@@ -99,6 +99,20 @@ http://IP_DEL_LXC:80
 
 El hostname público de Cloudflare debe apuntar mediante HTTP a esa dirección y puerto.
 
+## Despliegue automático con GitHub Actions
+
+El repositorio incluye `.github/workflows/deploy.yml`. Cada actualización enviada a la rama `main` se ejecuta en el runner `self-hosted` registrado para este repositorio y reconstruye el servicio con Docker Compose.
+
+Antes del primer despliegue automático, verificá una sola vez en el LXC:
+
+```bash
+docker network inspect red-cv
+cd /opt/runner-frontend
+./svc.sh status
+```
+
+Si la red todavía no existe, creala con `docker network create red-cv`. El runner debe mostrarse como activo tanto en `systemd` como en `Settings > Actions > Runners` del repositorio.
+
 ## Actualizar el sitio
 
 Después de actualizar los archivos del proyecto, validá y reconstruí:
