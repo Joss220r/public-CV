@@ -46,7 +46,15 @@ src/content/cv.ts
 
 El archivo utiliza el tipo `CvData`, definido en `src/types/cv.ts`. Ahí podés completar el perfil, disponibilidad, experiencia laboral, estudios, habilidades, proyectos y enlaces de contacto.
 
-Los campos opcionales vacíos no se muestran. Las secciones de experiencia, proyectos y contacto aparecen únicamente cuando contienen datos válidos.
+El archivo contiene una versión tipada para español, inglés y japonés. Al actualizar un dato traducible, completá el mismo campo en las tres versiones. Los campos opcionales vacíos no se muestran. Las secciones de experiencia, proyectos y contacto aparecen únicamente cuando contienen datos válidos.
+
+Los textos de interfaz están centralizados en:
+
+```text
+src/content/translations.ts
+```
+
+El sitio detecta el idioma principal del navegador. Reconoce `es`, `en` y `ja`; cualquier otro idioma usa inglés. La persona también puede cambiar el idioma manualmente desde el encabezado y esa preferencia queda guardada en el navegador.
 
 Ejemplo de un proyecto:
 
@@ -116,6 +124,7 @@ app/
 src/
   components/         Componentes reutilizables
   content/cv.ts       Contenido editable del CV
+  content/translations.ts Textos de interfaz y detección de idioma
   types/cv.ts         Tipos del contenido
   App.tsx             Composición de la página
   styles.css          Tema, utilidades y movimiento

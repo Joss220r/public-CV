@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { ContactSection, hasVisibleContact } from './components/ContactSection'
 import { EducationSection } from './components/EducationSection'
 import { ExperienceSection } from './components/ExperienceSection'
@@ -7,15 +10,37 @@ import { ProjectsSection } from './components/ProjectsSection'
 import { SectionHeading } from './components/SectionHeading'
 import { SkillsSection } from './components/SkillsSection'
 import { cvData } from './content/cv'
+import { detectLanguage, isSupportedLanguage, siteCopy, supportedLanguages } from './content/translations'
+import type { Language } from './types/cv'
+
+const languageStorageKey = 'jose-ayala-portfolio-language'
 
 function App() {
+  const [language, setLanguage] = useState<Language>('en')
+  const data = cvData[language]
+  const copy = siteCopy[language]
+
+  useEffect(() => {
+    const savedLanguage = window.localStorage.getItem(languageStorageKey)
+    setLanguage(isSupportedLanguage(savedLanguage) ? savedLanguage : detectLanguage(window.navigator.language))
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
+
+  const changeLanguage = (nextLanguage: Language) => {
+    setLanguage(nextLanguage)
+    window.localStorage.setItem(languageStorageKey, nextLanguage)
+  }
+
   const sections = [
-    { id: 'perfil', label: 'Perfil', visible: true },
-    { id: 'experiencia', label: 'Experiencia', visible: cvData.experience.length > 0 },
-    { id: 'estudios', label: 'Estudios', visible: cvData.education.length > 0 },
-    { id: 'habilidades', label: 'Habilidades', visible: cvData.skillGroups.length > 0 },
-    { id: 'proyectos', label: 'Proyectos', visible: cvData.projects.length > 0 },
-    { id: 'contacto', label: 'Contacto', visible: hasVisibleContact(cvData.contact) },
+    { id: 'perfil', label: copy.navigation.profile, visible: true },
+    { id: 'experiencia', label: copy.navigation.experience, visible: data.experience.length > 0 },
+    { id: 'estudios', label: copy.navigation.education, visible: data.education.length > 0 },
+    { id: 'habilidades', label: copy.navigation.skills, visible: data.skillGroups.length > 0 },
+    { id: 'proyectos', label: copy.navigation.projects, visible: data.projects.length > 0 },
+    { id: 'contacto', label: copy.navigation.contact, visible: hasVisibleContact(data.contact) },
   ].filter((section) => section.visible)
 
   const navigation = sections.map((section) => ({
@@ -29,9 +54,16 @@ function App() {
   return (
     <div className="min-h-screen overflow-hidden bg-ink text-zinc-100">
       <a className="skip-link" href="#contenido">
-        Ir al contenido
+        {copy.skipToContent}
       </a>
-      <Header name={cvData.shortName} items={navigation} />
+      <Header
+        name={data.shortName}
+        items={navigation}
+        language={language}
+        languageOptions={supportedLanguages.map((value) => ({ value, label: siteCopy[value].languageName }))}
+        copy={copy.header}
+        onLanguageChange={changeLanguage}
+      />
 
       <main id="contenido">
         <section
@@ -44,20 +76,20 @@ function App() {
             <div className="max-w-4xl">
               <p className="reveal reveal-1 mb-7 inline-flex items-center gap-3 font-mono text-xs font-semibold uppercase tracking-[0.22em] text-violet-300">
                 <span className="h-px w-10 bg-violet-400" aria-hidden="true" />
-                {cvData.role} · {cvData.country}
+                {data.role} · {data.country}
               </p>
               <h1 className="reveal reveal-2 text-balance text-[clamp(3.4rem,10vw,8.5rem)] font-semibold leading-[0.86] tracking-[-0.075em] text-white">
-                {cvData.name}
+                {data.name}
               </h1>
               <p className="reveal reveal-3 mt-8 max-w-2xl text-lg leading-8 text-zinc-400 sm:text-xl">
-                Desarrollo experiencias nativas para el ecosistema Apple con una atención especial al detalle y la claridad.
+                {copy.hero.description}
               </p>
               <div className="reveal reveal-4 mt-10 flex flex-wrap gap-3">
                 <a className="primary-link" href="#perfil">
-                  Conocer mi perfil
+                  {copy.hero.profileAction}
                 </a>
                 <a className="secondary-link" href="#habilidades">
-                  Ver tecnologías
+                  {copy.hero.skillsAction}
                 </a>
               </div>
             </div>
@@ -71,7 +103,7 @@ function App() {
                 <p className="font-mono text-7xl font-semibold tracking-[-0.08em] text-white">JA</p>
                 <div className="mt-5 h-px bg-gradient-to-r from-violet-400 to-transparent" />
                 <div className="mt-5 flex items-end justify-between">
-                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-violet-300">Swift native</p>
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-violet-300">{copy.hero.nativeLabel}</p>
                   <span className="size-3 rounded-full bg-violet-400 shadow-[0_0_20px_rgba(169,120,255,0.8)]" />
                 </div>
               </div>
@@ -80,26 +112,26 @@ function App() {
         </section>
 
         <section id="perfil" className="section-shell scroll-mt-24">
-          <SectionHeading eyebrow={`${sectionNumber('perfil')} / Perfil`} title="Código nativo, experiencias claras." />
+          <SectionHeading eyebrow={`${sectionNumber('perfil')} / ${copy.navigation.profile}`} title={copy.profile.title} />
           <div className="grid gap-10 lg:grid-cols-[12rem_1fr]">
             <div className="hidden lg:block" />
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(15rem,0.6fr)]">
               <p className="max-w-3xl text-balance text-2xl leading-[1.45] tracking-[-0.025em] text-zinc-200 sm:text-3xl">
-                {cvData.profile}
+                {data.profile}
               </p>
               <dl className="grid content-start gap-5 border-l border-white/10 pl-6">
                 <div>
-                  <dt className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">Especialidad</dt>
-                  <dd className="mt-2 text-base text-white">{cvData.role}</dd>
+                  <dt className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">{copy.profile.specialty}</dt>
+                  <dd className="mt-2 text-base text-white">{data.role}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">Ubicación</dt>
-                  <dd className="mt-2 text-base text-white">{cvData.country}</dd>
+                  <dt className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">{copy.profile.location}</dt>
+                  <dd className="mt-2 text-base text-white">{data.country}</dd>
                 </div>
-                {cvData.availability && (
+                {data.availability && (
                   <div>
-                    <dt className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">Disponibilidad</dt>
-                    <dd className="mt-2 text-base text-white">{cvData.availability}</dd>
+                    <dt className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">{copy.profile.availability}</dt>
+                    <dd className="mt-2 text-base text-white">{data.availability}</dd>
                   </div>
                 )}
               </dl>
@@ -107,14 +139,39 @@ function App() {
           </div>
         </section>
 
-        <ExperienceSection items={cvData.experience} number={sectionNumber('experiencia')} />
-        <EducationSection items={cvData.education} number={sectionNumber('estudios')} />
-        <SkillsSection groups={cvData.skillGroups} number={sectionNumber('habilidades')} />
-        <ProjectsSection items={cvData.projects} number={sectionNumber('proyectos')} />
-        <ContactSection contact={cvData.contact} number={sectionNumber('contacto')} />
+        <ExperienceSection
+          items={data.experience}
+          number={sectionNumber('experiencia')}
+          label={copy.navigation.experience}
+          copy={copy.experience}
+        />
+        <EducationSection
+          items={data.education}
+          number={sectionNumber('estudios')}
+          label={copy.navigation.education}
+          copy={copy.education}
+        />
+        <SkillsSection
+          groups={data.skillGroups}
+          number={sectionNumber('habilidades')}
+          label={copy.navigation.skills}
+          copy={copy.skills}
+        />
+        <ProjectsSection
+          items={data.projects}
+          number={sectionNumber('proyectos')}
+          label={copy.navigation.projects}
+          copy={copy.projects}
+        />
+        <ContactSection
+          contact={data.contact}
+          number={sectionNumber('contacto')}
+          label={copy.navigation.contact}
+          copy={copy.contact}
+        />
       </main>
 
-      <Footer name={cvData.shortName} role={cvData.role} country={cvData.country} />
+      <Footer name={data.shortName} role={data.role} country={data.country} />
     </div>
   )
 }

@@ -3,8 +3,8 @@ import type { ReactNode } from 'react'
 import '../src/styles.css'
 
 export const metadata: Metadata = {
-  title: 'Jose Ayala | Desarrollador iOS',
-  description: 'CV y portafolio profesional de Jose Julian Ayala Flores, desarrollador iOS de Guatemala.',
+  title: 'Jose Ayala | iOS Developer',
+  description: 'Professional CV and portfolio of Jose Julian Ayala Flores, an iOS developer based in Guatemala.',
 }
 
 interface RootLayoutProps {
@@ -13,7 +13,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body>{children}</body>
     </html>
   )

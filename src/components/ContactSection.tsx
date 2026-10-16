@@ -1,9 +1,11 @@
-import type { Contact } from '../types/cv'
+import type { Contact, SiteCopy } from '../types/cv'
 import { SectionHeading } from './SectionHeading'
 
 interface ContactSectionProps {
   contact: Contact
   number: string
+  label: string
+  copy: SiteCopy['contact']
 }
 
 interface ContactLink {
@@ -17,16 +19,16 @@ export function hasVisibleContact(contact: Contact) {
   return Boolean(contact.email || contact.github || contact.linkedin)
 }
 
-export function ContactSection({ contact, number }: ContactSectionProps) {
+export function ContactSection({ contact, number, label, copy }: ContactSectionProps) {
   const links: ContactLink[] = [
     contact.email
-      ? { label: 'Correo', value: contact.email, href: `mailto:${contact.email}`, external: false }
+      ? { label: copy.email, value: contact.email, href: `mailto:${contact.email}`, external: false }
       : null,
     contact.github
-      ? { label: 'GitHub', value: 'Perfil de GitHub', href: contact.github, external: true }
+      ? { label: 'GitHub', value: copy.githubValue, href: contact.github, external: true }
       : null,
     contact.linkedin
-      ? { label: 'LinkedIn', value: 'Perfil de LinkedIn', href: contact.linkedin, external: true }
+      ? { label: 'LinkedIn', value: copy.linkedinValue, href: contact.linkedin, external: true }
       : null,
   ].filter((link): link is ContactLink => link !== null)
 
@@ -37,9 +39,9 @@ export function ContactSection({ contact, number }: ContactSectionProps) {
   return (
     <section id="contacto" className="section-shell scroll-mt-24">
       <SectionHeading
-        eyebrow={`${number} / Contacto`}
-        title="Conectemos y conversemos."
-        description="Encontrá mis canales profesionales a continuación."
+        eyebrow={`${number} / ${label}`}
+        title={copy.title}
+        description={copy.description}
       />
       <div className="grid gap-10 lg:grid-cols-[12rem_1fr]">
         <div className="hidden lg:block" />

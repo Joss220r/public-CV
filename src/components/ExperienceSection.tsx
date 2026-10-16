@@ -1,16 +1,18 @@
-import type { Experience } from '../types/cv'
+import type { Experience, SiteCopy } from '../types/cv'
 import { SectionHeading } from './SectionHeading'
 
 interface ExperienceSectionProps {
   items: Experience[]
   number: string
+  label: string
+  copy: SiteCopy['experience']
 }
 
 function formatPeriod(startDate?: string, endDate?: string) {
   return [startDate, endDate].filter(Boolean).join(' — ')
 }
 
-export function ExperienceSection({ items, number }: ExperienceSectionProps) {
+export function ExperienceSection({ items, number, label, copy }: ExperienceSectionProps) {
   const visibleItems = items.filter((item) => item.company && item.role)
 
   if (visibleItems.length === 0) {
@@ -19,7 +21,7 @@ export function ExperienceSection({ items, number }: ExperienceSectionProps) {
 
   return (
     <section id="experiencia" className="section-shell scroll-mt-24">
-      <SectionHeading eyebrow={`${number} / Experiencia`} title="Trabajo y evolución profesional." />
+      <SectionHeading eyebrow={`${number} / ${label}`} title={copy.title} />
       <div className="grid gap-10 lg:grid-cols-[12rem_1fr]">
         <div className="hidden lg:block" />
         <div className="relative grid gap-5 before:absolute before:bottom-8 before:left-[0.38rem] before:top-8 before:w-px before:bg-white/10 sm:before:left-[0.48rem]">
@@ -53,7 +55,7 @@ export function ExperienceSection({ items, number }: ExperienceSectionProps) {
                     </ul>
                   )}
                   {technologies.length > 0 && (
-                    <ul className="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías utilizadas">
+                    <ul className="mt-6 flex flex-wrap gap-2" aria-label={copy.technologies}>
                       {technologies.map((technology) => (
                         <li className="tech-pill" key={technology}>{technology}</li>
                       ))}

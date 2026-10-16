@@ -1,12 +1,14 @@
-import type { SkillGroup } from '../types/cv'
+import type { SiteCopy, SkillGroup } from '../types/cv'
 import { SectionHeading } from './SectionHeading'
 
 interface SkillsSectionProps {
   groups: SkillGroup[]
   number: string
+  label: string
+  copy: SiteCopy['skills']
 }
 
-export function SkillsSection({ groups, number }: SkillsSectionProps) {
+export function SkillsSection({ groups, number, label, copy }: SkillsSectionProps) {
   const visibleGroups = groups
     .map((group) => ({ ...group, skills: group.skills.filter(Boolean) }))
     .filter((group) => group.name && group.skills.length > 0)
@@ -18,8 +20,8 @@ export function SkillsSection({ groups, number }: SkillsSectionProps) {
   return (
     <section id="habilidades" className="section-shell scroll-mt-24">
       <SectionHeading
-        eyebrow={`${number} / Habilidades`}
-        title="Herramientas para construir en iOS."
+        eyebrow={`${number} / ${label}`}
+        title={copy.title}
       />
       <div className="grid gap-10 lg:grid-cols-[12rem_1fr]">
         <div className="hidden lg:block" />
@@ -30,7 +32,7 @@ export function SkillsSection({ groups, number }: SkillsSectionProps) {
                 <h3 className="text-lg font-semibold text-white">{group.name}</h3>
                 <span className="font-mono text-xs text-zinc-600">0{groupIndex + 1}</span>
               </div>
-              <ul className="flex flex-wrap gap-2.5" aria-label={`Tecnologías de ${group.name}`}>
+              <ul className="flex flex-wrap gap-2.5" aria-label={`${copy.technologies} ${group.name}`}>
                 {group.skills.map((skill) => (
                   <li className="tech-pill text-sm" key={skill}>{skill}</li>
                 ))}

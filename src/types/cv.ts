@@ -1,3 +1,5 @@
+export type Language = 'es' | 'en' | 'ja'
+
 export interface Experience {
   company: string
   role: string
@@ -47,4 +49,62 @@ export interface CvData {
   skillGroups: SkillGroup[]
   projects: Project[]
   contact: Contact
+}
+
+export interface SiteCopy {
+  languageName: string
+  header: {
+    mainNavigation: string
+    mobileNavigation: string
+    language: string
+    openMenu: string
+    closeMenu: string
+    home: string
+  }
+  navigation: {
+    profile: string
+    experience: string
+    education: string
+    skills: string
+    projects: string
+    contact: string
+  }
+  skipToContent: string
+  hero: {
+    description: string
+    profileAction: string
+    skillsAction: string
+    nativeLabel: string
+  }
+  profile: {
+    title: string
+    specialty: string
+    location: string
+    availability: string
+  }
+  experience: {
+    title: string
+    technologies: string
+  }
+  education: {
+    title: string
+  }
+  skills: {
+    title: string
+    technologies: string
+  }
+  projects: {
+    title: string
+    item: string
+    technologies: string
+    liveLink: string
+    repositoryLink: string
+  }
+  contact: {
+    title: string
+    description: string
+    email: string
+    githubValue: string
+    linkedinValue: string
+  }
 }

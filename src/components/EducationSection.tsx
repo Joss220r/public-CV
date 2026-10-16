@@ -1,16 +1,18 @@
-import type { Education } from '../types/cv'
+import type { Education, SiteCopy } from '../types/cv'
 import { SectionHeading } from './SectionHeading'
 
 interface EducationSectionProps {
   items: Education[]
   number: string
+  label: string
+  copy: SiteCopy['education']
 }
 
 function formatPeriod(startDate?: string, endDate?: string) {
   return [startDate, endDate].filter(Boolean).join(' — ')
 }
 
-export function EducationSection({ items, number }: EducationSectionProps) {
+export function EducationSection({ items, number, label, copy }: EducationSectionProps) {
   const visibleItems = items.filter((item) => item.degree && item.institution)
 
   if (visibleItems.length === 0) {
@@ -19,7 +21,7 @@ export function EducationSection({ items, number }: EducationSectionProps) {
 
   return (
     <section id="estudios" className="section-shell scroll-mt-24">
-      <SectionHeading eyebrow={`${number} / Estudios`} title="Formación académica." />
+      <SectionHeading eyebrow={`${number} / ${label}`} title={copy.title} />
       <div className="grid gap-10 lg:grid-cols-[12rem_1fr]">
         <div className="hidden lg:block" />
         <div className="grid gap-4">
