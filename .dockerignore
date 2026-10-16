@@ -1,7 +1,11 @@
 node_modules
+.next
 dist
+tsconfig.tsbuildinfo
 .git
 .env
-npm-debug.log*
+tmp
+release
+pnpm-debug.log*
 Dockerfile*
 README.md

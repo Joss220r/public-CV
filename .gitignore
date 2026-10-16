@@ -1,0 +1,11 @@
+node_modules/
+.next/
+dist/
+release/
+tmp/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+pnpm-debug.log*
+npm-debug.log*

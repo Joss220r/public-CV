@@ -1,9 +1,16 @@
 services:
-  portfolio:
+  frontend:
     build:
       context: .
       target: runtime
+    container_name: cv-frontend
     image: jose-ayala-portfolio:local
-    restart: unless-stopped
+    restart: always
     ports:
-      - "${SITE_PORT:-8080}:80"
+      - "80:80"
+    networks:
+      - red-cv
+
+networks:
+  red-cv:
+    external: true
