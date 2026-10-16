@@ -15,6 +15,26 @@ import type { Language } from './types/cv'
 
 const languageStorageKey = 'jose-ayala-portfolio-language'
 
+function easeInOutCubic(progress: number) {
+  return progress < 0.5
+    ? 4 * progress * progress * progress
+    : 1 - Math.pow(-2 * progress + 2, 3) / 2
+}
+
+function focusDestination(destination: HTMLElement) {
+  const hadTabIndex = destination.hasAttribute('tabindex')
+
+  if (!hadTabIndex) {
+    destination.setAttribute('tabindex', '-1')
+  }
+
+  destination.focus({ preventScroll: true })
+
+  if (!hadTabIndex) {
+    destination.addEventListener('blur', () => destination.removeAttribute('tabindex'), { once: true })
+  }
+}
+
 function App() {
   const [language, setLanguage] = useState<Language>('en')
   const data = cvData[language]
@@ -28,6 +48,92 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = language
   }, [language])
+
+  useEffect(() => {
+    let animationFrame = 0
+
+    const cancelAnimation = () => {
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame)
+        animationFrame = 0
+      }
+    }
+
+    const navigateToSection = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return
+      }
+
+      const source = event.target
+
+      if (!(source instanceof Element)) {
+        return
+      }
+
+      const anchor = source.closest<HTMLAnchorElement>('a[href^="#"]')
+      const hash = anchor?.getAttribute('href')
+
+      if (!anchor || !hash || hash === '#' || anchor.classList.contains('skip-link')) {
+        return
+      }
+
+      const destination = document.getElementById(decodeURIComponent(hash.slice(1)))
+
+      if (!destination) {
+        return
+      }
+
+      event.preventDefault()
+      cancelAnimation()
+
+      if (window.location.hash !== hash) {
+        window.history.pushState(null, '', hash)
+      }
+
+      const startPosition = window.scrollY
+      const scrollMargin = Number.parseFloat(window.getComputedStyle(destination).scrollMarginTop) || 0
+      const destinationPosition = Math.max(
+        0,
+        destination.getBoundingClientRect().top + startPosition - scrollMargin,
+      )
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.scrollTo({ top: destinationPosition, behavior: 'auto' })
+        focusDestination(destination)
+        return
+      }
+
+      const distance = destinationPosition - startPosition
+      const duration = Math.min(1300, Math.max(800, Math.abs(distance) * 0.25))
+      let startedAt: number | undefined
+
+      const move = (timestamp: number) => {
+        startedAt ??= timestamp
+        const progress = Math.min((timestamp - startedAt) / duration, 1)
+        window.scrollTo(0, startPosition + distance * easeInOutCubic(progress))
+
+        if (progress < 1) {
+          animationFrame = window.requestAnimationFrame(move)
+        } else {
+          animationFrame = 0
+          focusDestination(destination)
+        }
+      }
+
+      animationFrame = window.requestAnimationFrame(move)
+    }
+
+    document.addEventListener('click', navigateToSection)
+    window.addEventListener('wheel', cancelAnimation, { passive: true })
+    window.addEventListener('touchstart', cancelAnimation, { passive: true })
+
+    return () => {
+      cancelAnimation()
+      document.removeEventListener('click', navigateToSection)
+      window.removeEventListener('wheel', cancelAnimation)
+      window.removeEventListener('touchstart', cancelAnimation)
+    }
+  }, [])
 
   const changeLanguage = (nextLanguage: Language) => {
     setLanguage(nextLanguage)
