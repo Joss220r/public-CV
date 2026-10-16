@@ -42,7 +42,7 @@ export const siteCopy: Record<Language, SiteCopy> = {
       title: 'Formación académica.',
     },
     skills: {
-      title: 'Herramientas para construir en iOS.',
+      title: 'Habilidades, lenguajes y herramientas.',
       technologies: 'Tecnologías de',
     },
     projects: {
@@ -56,6 +56,7 @@ export const siteCopy: Record<Language, SiteCopy> = {
       title: 'Conectemos y conversemos.',
       description: 'Encontrá mis canales profesionales a continuación.',
       email: 'Correo',
+      phone: 'Teléfono',
       githubValue: 'Perfil de GitHub',
       linkedinValue: 'Perfil de LinkedIn',
     },
@@ -99,7 +100,7 @@ export const siteCopy: Record<Language, SiteCopy> = {
       title: 'Academic background.',
     },
     skills: {
-      title: 'Tools for building on iOS.',
+      title: 'Skills, languages, and tools.',
       technologies: 'Technologies in',
     },
     projects: {
@@ -113,6 +114,7 @@ export const siteCopy: Record<Language, SiteCopy> = {
       title: 'Let’s connect and talk.',
       description: 'Find my professional channels below.',
       email: 'Email',
+      phone: 'Phone',
       githubValue: 'GitHub profile',
       linkedinValue: 'LinkedIn profile',
     },
@@ -156,7 +158,7 @@ export const siteCopy: Record<Language, SiteCopy> = {
       title: '学歴。',
     },
     skills: {
-      title: 'iOS開発のための技術。',
+      title: 'スキル、言語、ツール。',
       technologies: '技術',
     },
     projects: {
@@ -170,6 +172,7 @@ export const siteCopy: Record<Language, SiteCopy> = {
       title: 'お気軽にご連絡ください。',
       description: '以下の連絡先からお問い合わせいただけます。',
       email: 'メール',
+      phone: '電話',
       githubValue: 'GitHubプロフィール',
       linkedinValue: 'LinkedInプロフィール',
     },

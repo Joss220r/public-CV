@@ -16,13 +16,16 @@ interface ContactLink {
 }
 
 export function hasVisibleContact(contact: Contact) {
-  return Boolean(contact.email || contact.github || contact.linkedin)
+  return Boolean(contact.email || contact.phone || contact.github || contact.linkedin)
 }
 
 export function ContactSection({ contact, number, label, copy }: ContactSectionProps) {
   const links: ContactLink[] = [
     contact.email
       ? { label: copy.email, value: contact.email, href: `mailto:${contact.email}`, external: false }
+      : null,
+    contact.phone
+      ? { label: copy.phone, value: contact.phone, href: `tel:${contact.phone.replace(/[^\d+]/g, '')}`, external: false }
       : null,
     contact.github
       ? { label: 'GitHub', value: copy.githubValue, href: contact.github, external: true }

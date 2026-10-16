@@ -33,6 +33,7 @@ export interface Project {
 
 export interface Contact {
   email?: string
+  phone?: string
   github?: string
   linkedin?: string
 }
@@ -104,6 +105,7 @@ export interface SiteCopy {
     title: string
     description: string
     email: string
+    phone: string
     githubValue: string
     linkedinValue: string
   }
